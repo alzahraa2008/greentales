@@ -1,0 +1,210 @@
+import time
+from plyer import notification
+
+# Start function to display the introduction message
+def start():
+    print("Life Balance")
+    time.sleep(2)
+    print("At LifeBalance, we believe physical activity is key to achieving a healthy,")
+    time.sleep(2)
+    print("balanced life, especially when it comes to chronic disease management and prevention. We provide you with the tools and knowledge to enhance your overall health through physical activity,")
+    time.sleep(2)
+    print("and help you balance your daily life with your health needs.")
+
+# Function to display the importance of physical activity
+def importance():
+    print("The Importance Of Physical Activity In Our Life")
+    time.sleep(2)
+    print("1- Improve your memory and brain function (all age groups).")
+    time.sleep(2)
+    print("2- Protect against many chronic diseases.")
+    time.sleep(2)
+    print("3- Aid in weight management.")
+    time.sleep(2)
+    print("4- Lower blood pressure and improve heart health.")
+    time.sleep(2)
+    print("5- Improve your quality of sleep.")
+    time.sleep(2)
+    print("6- Reduce feelings of anxiety and depression.")
+    time.sleep(2)
+    print("7- Combat cancer-related fatigue.")
+    time.sleep(2)
+    print("8- Improve joint pain and stiffness.")
+    time.sleep(2)
+    print("9- Maintain muscle strength and balance.")
+    time.sleep(2)
+    print("10- Increase life span.")
+
+# Function to display diseases affected by physical activity
+def diseases():
+    print("Physical activity can help prevent many chronic diseases, as well as reduce their symptoms. Here are some diseases whose symptoms can be improved or reduced through exercise:")
+    time.sleep(2)
+    print("1- Cardiovascular diseases:")
+    print("Prevention: Physical activity helps reduce the risk of heart disease, such as heart attacks and coronary artery disease.")
+    print("Reducing symptoms: It contributes to lowering blood pressure, reducing harmful cholesterol levels, and enhancing overall heart health.")
+    time.sleep(2)
+    print("2- Type 2 diabetes:")
+    print("Prevention: Regular exercise can reduce the risk of type 2 diabetes.")
+    print("Reducing symptoms: Exercise improves insulin sensitivity and helps manage blood sugar levels.")
+    time.sleep(2)
+    print("3- Arthritis:")
+    print("Prevention: Light exercise can help maintain joint flexibility and reduce inflammation.")
+    print("Reducing symptoms: Exercise relieves pain and stiffness associated with arthritis.")
+    time.sleep(2)
+    print("4- Asthma and respiratory diseases:")
+    print("Prevention: Regular physical activity can help improve respiratory health and reduce the frequency of asthma attacks.")
+    print("Reducing symptoms: Enhances respiratory capacity and improves lung efficiency.")
+    time.sleep(2)
+    print("5- Kidney disease:")
+    print("Prevention: Regular exercise can help control blood pressure and diabetes, two major factors in kidney health.")
+    print("Reducing symptoms: Supports cardiovascular health, which benefits kidney health.")
+    time.sleep(2)
+    print("6- Depression and anxiety:")
+    print("Prevention: Physical activity can reduce the risk of depression and anxiety by boosting endorphin levels.")
+    print("Reducing symptoms: It helps improve mood and relieves stress and anxiety.")
+
+# Function to ask the user for the reminder text
+def get_reminder_text():
+    return input("Enter the reminder text: ")
+
+# Function to handle recurring reminders every 3 minutes
+def main():
+    reminder_text = get_reminder_text()
+    print("Reminder will trigger every 3 minutes.")
+    while True:
+        notification.notify(
+            title="Reminder",
+            message=reminder_text,
+            timeout=10  
+        )
+        print("Reminder triggered!")
+        time.sleep(3 * 60)
+
+# General input function with validation options
+def get_input(prompt, is_alpha=False, is_email=False, is_phone=False, is_weight=False):
+    while True:
+        value = input(prompt)
+        if is_alpha and not value.isalpha():
+            print("This field requires alphabetic characters only. Please enter a valid value.")
+        elif is_email and ("@" not in value or ".com" not in value):
+            print("Invalid email format. Email must contain '@' and end with '.com'.")
+        elif is_phone and (not value.isdigit() or len(value) != 11):
+            print("Phone number must be exactly 11 digits.")
+        elif is_weight and (not value.isdigit() or int(value) < 34 or len(value) > 3):
+            print("Weight must be a numeric value between 34 and 999.")
+        elif value:
+            return value
+        else:
+            print("This field is required. Please enter a value.")
+
+# Function to ask the user about video progress
+def ask_progress_update(videos, progress):
+    print("\nDid you watch today's recommended videos?")
+    for i, video in enumerate(videos):
+        status = "Watched" if progress[i] == 1 else "Not Watched"
+        answer = input(f"Did you watch '{video}'? [yes/no]: ").strip().lower()
+        if answer == "yes":
+            progress[i] = 1
+            print(f"Marked '{video}' as watched.")
+        elif answer == "no":
+            print(f"'{video}' remains not watched.")
+        else:
+            print("Invalid input. Please answer with 'yes' or 'no'.")
+
+# Function to calculate the percentage of videos watched
+def calculate_progress_percentage(progress):
+    watched_count = sum(progress)
+    total_videos = len(progress)
+    percentage = (watched_count / total_videos) * 100
+    return percentage
+
+# Function to display the user's progress
+def display_progress(percentage):
+    print(f"\nYour progress for today is: {percentage:.2f}%")
+
+# Main workflow functions
+def programe(topics, disease):
+    recommended_videos = []
+    if topics == "1":
+        importance()
+    elif topics == "2":
+        diseases()
+    elif topics == "3":
+        if disease == "1": 
+            recommended_videos = ["Exercise for Arthritis Relief", "Joint Flexibility Exercises"]
+        elif disease == "2": 
+            recommended_videos = ["Breathing Exercises for Respiratory Health", "Low-Impact Cardio for Asthma"]
+        elif disease == "3":
+            recommended_videos = ["Mood-Boosting Workouts", "Stress Relief Exercises"]
+        elif disease == "4": 
+            recommended_videos = ["Full Body Workouts for All Levels", "Tips for Maintaining a Healthy Lifestyle"]
+
+    if recommended_videos:
+        progress_tracker = [0] * len(recommended_videos)
+        ask_progress_update(recommended_videos, progress_tracker)
+        percentage = calculate_progress_percentage(progress_tracker)
+        display_progress(percentage)
+    else:
+        print("No recommended videos available.")
+
+# Workflow functions for choosing levels and preferences
+def fourth(disease):
+    gender = get_input("Gender: 1-male, 2-female [choose from 1 or 2]: ")
+    if gender in ["1", "2"]:
+        topics = get_input("1-Importance of physical activity, 2-Diseases that can be reduced by physical activity, 3-workout videos [choose from 1 to 3]: ")
+        programe(topics, disease)
+    else:
+        print("Invalid choice for fitness level. Please enter a number from 1 to 3.")
+        fourth(disease)
+
+def third():
+    disease = get_input("If you have any diseases: 1-arthritis, 2-Asthma and respiratory diseases, 3-Depression and anxiety, 4-None [choose from 1 to 4]: ")
+    if disease in ["1", "2", "3", "4"]:
+        fourth(disease)
+    else:
+        print("Invalid choice for fitness level. Please enter a number from 1 to 4.")
+        third()
+
+def second():
+    fitness_level = get_input("Fitness level: 1-low, 2-medium, 3-high [choose from 1 to 3]: ")
+    if fitness_level in ["1", "2", "3"]:
+        third()
+    else:
+        print("Invalid choice for fitness level. Please enter a number from 1 to 3.")
+        second()
+
+def first():
+    free_time = get_input("Enter your free time: 1PM, 2PM, 3PM, 4PM, 5PM, 6PM, 7PM [choose from 1 to 7]: ")
+    if free_time in ["1", "2", "3", "4", "5", "6", "7"]:
+        second()
+    else:
+        print("Invalid free time selection. Please enter a number from 1 to 7.")
+        first()
+
+# Start the program
+start()
+
+# Get user information
+name = get_input("Enter your name: ", is_alpha=True)
+email = get_input("Enter your email: ", is_email=True)
+phone = get_input("Enter your phone number: ", is_phone=True)
+weight = get_input("Enter your weight: ", is_weight=True)
+
+# Start the main workflow
+first()
+
+# Run the reminder system
+if __name__ == "__main__":
+    main()
+
+def ask_final_choice(topics, disease):
+    """Ask the user if they are done and show a message accordingly."""
+    final_choice = input("Have you finished everything you wanted to see? [yes/no]: ").strip().lower()
+    if final_choice == "yes":
+        print("Thank you for using our program!")
+    elif final_choice == "no":
+        print("Let's go back to choose what you'd like to explore again.")
+        programe(topics, disease)  
+    else:
+        print("Invalid input. Please answer with 'yes' or 'no'.")
+        ask_final_choice(topics, disease)
